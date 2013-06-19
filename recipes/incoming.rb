@@ -31,7 +31,7 @@ ruby_block 'Repository - Process incoming' do
   action :nothing
   block do
     Dir.glob(File.join(node[:repository][:incoming][:directory], '*.deb')).each do |deb_file|
-      r = Chef::Resource::Repository.new(deb_file, run_context)
+      r = Chef::Resource::RepositoryPackage.new(deb_file, run_context)
       r.action :nothing
       r.repository node[:repository][:incoming][:name]
       r.run_action(:add)
