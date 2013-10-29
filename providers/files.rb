@@ -6,14 +6,6 @@ def load_current_resource
 end
 
 action :build do
-  webserver_resource_name = 'service[ngninx]'
-  webserver = new_resource.run_context.resource_collection.lookup(webserver_resource_name)
-  stopper = service 'repository-webserver-stopper' do
-    service_name webserver.service_name
-    action :nothing
-  end
-  stopper.run_action(:stop)
-
   conf_file = ::File.join(node[:repository][:base], 'conf', "#{new_resource.codename}.json")
   pool_dir = ::File.join(node[:repository][:base], 'pool', new_resource.codename)
   dist_dir = ::File.join(node[:repository][:base], 'dists', new_resource.codename)
@@ -113,10 +105,5 @@ action :build do
     not_if do
       node[:repository][:do_not_sign]
     end
-  end
-
-  service 'repository-webserver-starter' do
-    service_name webserver.service_name
-    action :start
   end
 end
