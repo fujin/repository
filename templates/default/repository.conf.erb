@@ -6,6 +6,6 @@ server {
 
   location / {
     root <%= node['repository']['base'] %>;
-    index index.html index.htm;
+    autoindex on;
   }
 }
