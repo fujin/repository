@@ -1,9 +1,6 @@
 include_recipe 'apt'
-include_recipe 'apache2'
-
-apache_site '000-default' do
-  enable false
-end
+include_recipe 'nginx::repo'
+include_recipe 'nginx'
 
 node[:repository][:packages].each do |pkg|
   package pkg
@@ -21,9 +18,9 @@ end
   include_recipe "repository::#{recipe}"
 end
 
-template File.join(node[:apache][:dir], '/sites-available/repository.conf') do
+template File.join(node['nginx']['dir'], '/sites-available/repository.conf') do
   source 'repository.conf.erb'
   mode 0644
 end
 
-apache_site 'repository.conf'
+nginx_site 'repository.conf'

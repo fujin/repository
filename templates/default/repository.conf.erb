@@ -1,23 +1,11 @@
-<VirtualHost *:<%= node[:repository][:frontend][:listen_port] %>>
-  ServerAdmin <%= node[:repository][:pgp][:email] %>
-  ServerName <%= node[:repository][:frontend][:fqdn] %>
-  ServerAlias <%= node[:hostname] %> <%= node[:fqdn] %>
+server {
+  listen <%= node['repository']['frontend']['listen_port'] %>;
+  server_name <%= node['repository']['frontend']['fqdn'] %>;
 
-  DocumentRoot <%= node[:repository][:base] %>
-  <Directory />
-    Options FollowSymLinks
-    AllowOverride None
-  </Directory>
+  access_log <%= node['nginx']['log_dir'] %>/repository.access.log;
 
-  <Directory <%= node[:repository][:base] %>>
-    Options Indexes FollowSymLinks MultiViews
-    AllowOverride None
-    Order allow,deny
-    allow from all
-  </Directory>
-
-  LogLevel warn
-  ErrorLog /var/log/apache2/repository-error.log 
-  CustomLog /var/log/apache2/repository-access.log combined
-  ServerSignature On
-</VirtualHost>
+  location / {
+    root <%= node['repository']['base'] %>;
+    index index.html index.htm;
+  }
+}

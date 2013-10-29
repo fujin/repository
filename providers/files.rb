@@ -6,14 +6,15 @@ def load_current_resource
 end
 
 action :build do
-  apache2 = new_resource.run_context.resource_collection.lookup('service[apache2]')
-  stopper = service 'repository-apache-stopper' do
-    service_name apache2.service_name
+  webserver_resource_name = 'service[ngninx]'
+  webserver = new_resource.run_context.resource_collection.lookup(webserver_resource_name)
+  stopper = service 'repository-webserver-stopper' do
+    service_name webserver.service_name
     action :nothing
   end
   stopper.run_action(:stop)
 
-  conf_file = ::File.join(node[:repository][:base], 'conf', "#{new_resource.codename}.json")  
+  conf_file = ::File.join(node[:repository][:base], 'conf', "#{new_resource.codename}.json")
   pool_dir = ::File.join(node[:repository][:base], 'pool', new_resource.codename)
   dist_dir = ::File.join(node[:repository][:base], 'dists', new_resource.codename)
 
@@ -91,7 +92,7 @@ action :build do
     notifies :run, "execute[Release.gpg - #{new_resource.codename}]", :immediately
     notifies :run, "execute[InRelease - #{new_resource.codename}]", :immediately
   end
-  
+
   execute "Release.gpg - #{new_resource.codename}" do
     command "sudo -i gpg -ba #{::File.join(dist_dir, 'Release')} && mv #{::File.join(dist_dir, 'Release.asc')} #{::File.join(dist_dir, 'Release.gpg')}"
     action :nothing
@@ -114,8 +115,8 @@ action :build do
     end
   end
 
-  service 'repository-apache-starter' do
-    service_name apache2.service_name
+  service 'repository-webserver-starter' do
+    service_name webserver.service_name
     action :start
   end
 end
