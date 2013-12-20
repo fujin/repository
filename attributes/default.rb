@@ -1,4 +1,4 @@
-default[:repository][:packages] = %w(dpkg-dev debsigs)
+default[:repository][:packages] = %w(dpkg-dev debsigs ssl-certificates)
 default[:repository][:base] = '/srv/repository'
 default[:repository][:repos] = []
 default[:repository][:incoming][:codename] = node.lsb.codename
@@ -13,6 +13,11 @@ default[:repository][:gnupg_home] = '/root/.gnupg'
 default[:repository][:data_bag] = 'repository'
 default[:repository][:pgp_data_bag] = false
 default[:repository][:install_local_repos] = []
-default[:repository][:frontend][:listen_port] = 80
-default[:repository][:frontend][:fqdn] = fqdn
+
 default[:repository][:do_not_sign] = false
+
+# Repository Frontend (nginx)
+default['repository']['frontend']['listen_port'] = 443
+default['repository']['frontend']['fqdn'] = fqdn
+default['repository']['frontend']['ssl_certificate'] = '/etc/ssl/certs/ssl-cert-snakeoil.pem'
+default['repository']['frontend']['ssl_certificate_key'] = '/etc/ssl/private/ssl-cert-snakeoil.key'
