@@ -1,6 +1,6 @@
 server {
   listen <%= node['repository']['frontend']['listen_port'] %>;
-  server_name <%= node['repository']['frontend']['fqdn'] %> "";
+  server_name <%= node['repository']['frontend']['fqdn'] %>;
 
   access_log <%= node['nginx']['log_dir'] %>/repository.access.log;
 
