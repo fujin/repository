@@ -5,8 +5,8 @@ server {
   access_log <%= node['nginx']['log_dir'] %>/repository.access.log;
 
   ssl on;
-  ssl_certificate <%= node['repository']['frontend']['ssl_certificate'] %>
-  ssl_certificate_key <%= node['repository']['frontend']['ssl_certificate_key'] %>
+  ssl_certificate <%= node['repository']['frontend']['ssl_certificate'] %>;
+  ssl_certificate_key <%= node['repository']['frontend']['ssl_certificate_key'] %>;
 
   location / {
     root <%= node['repository']['base'] %>;
