@@ -1,4 +1,4 @@
-default[:repository][:packages] = %w(dpkg-dev debsigs ssl-certificates)
+default[:repository][:packages] = %w(dpkg-dev debsigs)
 default[:repository][:base] = '/srv/repository'
 default[:repository][:repos] = []
 default[:repository][:incoming][:codename] = node.lsb.codename
